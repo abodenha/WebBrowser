@@ -30,7 +30,18 @@ namespace WebBrowser
         {
             if (browser != null && browser.CoreWebView2 != null)
             {
-                browser.CoreWebView2.Navigate("https://www.google.com/search?btnI=1&q=" + url_bar.Text);
+                Uri url;
+                try
+                {
+                    url = new UriBuilder(url_bar.Text).Uri;
+                }
+                catch(Exception)
+                {
+                    url = new Uri("https://www.google.com/search?q=" + url_bar.Text);
+                }
+                string final_dest = url.AbsoluteUri;
+                browser.CoreWebView2.Navigate(final_dest);
+                url_bar.Text = final_dest;
             }
         }
 
